@@ -1,13 +1,8 @@
-// conect.js
 import { Sequelize } from 'sequelize';
 
-const sequelize = new Sequelize('conexao', 'root', 'Senha123@', {
+const sequelize = new Sequelize('database', 'username', 'password', {
     host: 'localhost',
-    dialect: 'mysql',
+    dialect: 'mysql', // ou 'postgres', etc.
 });
-
-sequelize.authenticate()
-    .then(() => console.log('Conectado com sucesso!'))
-    .catch(err => console.log('Falha ao se conectar: ' + err));
 
 export default sequelize;

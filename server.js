@@ -1,6 +1,6 @@
 import express from 'express';
-import Usuario from './models/Usuario'; // Importar o modelo de Usuário
-import conexao from './conexao';
+import Usuario from './models/Usuario.js'; // Importação corrigida
+import conexao from './conexao.js'; // Importação corrigida
 
 const app = express();
 app.use(express.json());
@@ -8,7 +8,7 @@ app.use(express.json());
 // Criar um novo usuário (POST)
 app.post('/usuarios', async (req, res) => {
     try {
-        const newUser = await Usuario.create(req.body); // Criar usuário no banco de dados
+        const newUser = await Usuario.create(req.body);
         res.status(201).json(newUser);
     } catch (error) {
         res.status(500).json({ message: 'Erro ao criar usuário', error });
@@ -18,7 +18,7 @@ app.post('/usuarios', async (req, res) => {
 // Listar todos os usuários (GET)
 app.get('/usuarios', async (req, res) => {
     try {
-        const users = await Usuario.findAll(); // Buscar todos os usuários no banco de dados
+        const users = await Usuario.findAll();
         res.status(200).json(users);
     } catch (error) {
         res.status(500).json({ message: 'Erro ao buscar usuários', error });
@@ -29,15 +29,14 @@ app.get('/usuarios', async (req, res) => {
 app.put('/usuarios', async (req, res) => {
     try {
         const updatedUsers = req.body;
-        const results = await Promise.all(updatedUsers.map(async updatedUser => {
-            return await Usuario.update(updatedUser, { where: { id: updatedUser.id } });
+        await Promise.all(updatedUsers.map(async updatedUser => {
+            await Usuario.update(updatedUser, { where: { id: updatedUser.id } });
         }));
         res.status(200).json({ message: 'Usuários atualizados com sucesso' });
     } catch (error) {
         res.status(500).json({ message: 'Erro ao atualizar usuários', error });
     }
 });
-
 
 // Atualizar parcialmente um usuário (PATCH)
 app.patch('/usuarios/:id', async (req, res) => {
@@ -55,7 +54,6 @@ app.patch('/usuarios/:id', async (req, res) => {
     }
 });
 
-
 // Deletar um usuário (DELETE)
 app.delete('/usuarios/:id', async (req, res) => {
     const { id } = req.params;
@@ -71,6 +69,14 @@ app.delete('/usuarios/:id', async (req, res) => {
     }
 });
 
-app.listen(3000, () => {
-    console.log('Servidor rodando na porta 3000');
-});
+// Estabelecer a conexão com o banco de dados antes de iniciar o servidor
+conexao.authenticate()
+    .then(() => {
+        console.log('Conexão com o banco de dados estabelecida com sucesso.');
+        app.listen(3000, () => {
+            console.log('Servidor rodando na porta 3000');
+        });
+    })
+    .catch((error) => {
+        console.error('Não foi possível conectar ao banco de dados:', error);
+    });
