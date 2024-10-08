@@ -1,6 +1,6 @@
 import express from 'express';
 import Usuario from './models/Usuario.js'; // Importação corrigida
-import conexao from './conexao.js'; // Importação corrigida
+import conexao from '../conexao.js'; // Importação corrigida
 
 const app = express();
 app.use(express.json());
