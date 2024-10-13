@@ -2,6 +2,7 @@ import express from 'express';
 import usuarioRoutes from './routes/usuarios.js';
 import carrinhoRoutes from './routes/carrinhos.js';
 import produtoRoutes from './routes/produtos.js';
+import ItemCarrinhoRoutes from './routes/item_carrinho.js';
 import conexao from './conexao.js'; // Importação da conexão
 
 const app = express();
@@ -9,7 +10,8 @@ app.use(express.json());
 
 app.use('/usuarios', usuarioRoutes);
 app.use('/carrinhos', carrinhoRoutes);
-app.use('/produtos', produtoRoutes); 
+app.use('/produtos', produtoRoutes);
+app.use('/item_carrinho', ItemCarrinhoRoutes);
 
 // Estabelecer a conexão com o banco de dados e iniciar o servidor
 const initServer = async () => {

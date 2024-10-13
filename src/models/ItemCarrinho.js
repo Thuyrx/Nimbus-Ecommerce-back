@@ -19,7 +19,7 @@ export default (sequelize, DataTypes) => {
         allowNull: false,
       },
     }, {
-      tableName: 'itens_carrinho',
+      tableName: 'item_carrinho',
       timestamps: false,
     });
   
