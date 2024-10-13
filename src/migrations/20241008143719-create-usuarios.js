@@ -25,6 +25,11 @@ module.exports = {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW,
       },
+      idade: { // Adicionando a coluna idade
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0, // Definindo um valor padrão
+      },
     });
   },
 
