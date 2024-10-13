@@ -86,10 +86,10 @@ src/
 
 ## Configure o arquivo .env com as variáveis de ambiente.
 
-DB_HOST=localhost
-DB_USER=seu_usuario
-DB_PASS=sua_senha
-DB_NAME=nome_do_banco
+DB_HOST=localhost,
+DB_USER=seu_usuario,
+DB_PASS=sua_senha,
+DB_NAME=nome_do_banco,
 PORT=3000
 
 ## Inicie o servidor:
