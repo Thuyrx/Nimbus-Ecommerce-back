@@ -1,8 +1,6 @@
 ﻿# Nimbus-Ecommerce-back
 
-## Descrição do Projeto
-
-Este projeto é uma API desenvolvida com Node.js que permite gerenciar um sistema de e-commerce. A API oferece funcionalidades para gerenciar usuários, produtos, carrinhos, pedidos e pagamentos.
+## Este projeto é uma API desenvolvida com Node.js que permite gerenciar um sistema de e-commerce. A API oferece funcionalidades para gerenciar usuários, produtos, carrinhos, pedidos e pagamentos.
 
 ## Requisitos Funcionais
 
