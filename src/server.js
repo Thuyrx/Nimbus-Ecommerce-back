@@ -3,7 +3,10 @@ import usuarioRoutes from './routes/usuarios.js';
 import carrinhoRoutes from './routes/carrinhos.js';
 import produtoRoutes from './routes/produtos.js';
 import ItemCarrinhoRoutes from './routes/item_carrinho.js';
-import conexao from './conexao.js'; // Importação da conexão
+import PedidosRoutes from './routes/pedidos.js'
+import ItemPedidoRoutes from './routes/item_pedido.js';
+import PagamentoRoutes from './routes/pagamento.js'
+import conexao from './conexao.js';
 
 const app = express();
 app.use(express.json());
@@ -12,6 +15,9 @@ app.use('/usuarios', usuarioRoutes);
 app.use('/carrinhos', carrinhoRoutes);
 app.use('/produtos', produtoRoutes);
 app.use('/item_carrinho', ItemCarrinhoRoutes);
+app.use('/item_pedido', ItemPedidoRoutes);
+app.use('/pedidos', PedidosRoutes);
+app.use('/pagamentos', PagamentoRoutes);
 
 // Estabelecer a conexão com o banco de dados e iniciar o servidor
 const initServer = async () => {

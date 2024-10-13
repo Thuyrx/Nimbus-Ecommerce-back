@@ -23,7 +23,7 @@ export default (sequelize, DataTypes) => {
         allowNull: false,
       },
     }, {
-      tableName: 'itens_pedido',
+      tableName: 'item_pedido',
       timestamps: false,
     });
   
