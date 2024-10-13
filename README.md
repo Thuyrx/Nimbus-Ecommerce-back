@@ -2,6 +2,7 @@
 
 ## Este projeto é uma API desenvolvida com Node.js que permite gerenciar um sistema de e-commerce. A API oferece funcionalidades para gerenciar usuários, produtos, carrinhos, pedidos e pagamentos.
 
+
 ## Requisitos Funcionais
 
 - **CRUD para Usuários**: Criar, ler, atualizar e deletar usuários.
