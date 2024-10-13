@@ -128,3 +128,7 @@ Este projeto é uma API desenvolvida com Node.js que permite gerenciar um sistem
 ## Inicie o servidor:
 - npm run dev
 
+
+### Resumo
+- Mantenha os conceitos curtos e diretos.
+- Certifique-se de que todas as seções necessárias estejam cobertas. Sinta-se à vontade para modificar conforme necessário!
