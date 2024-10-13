@@ -92,14 +92,14 @@ Este projeto é uma API desenvolvida com Node.js que permite gerenciar um sistem
 
 ### Estrutura de Pastas do Projeto
 
-src/
-  ├── config/ 
-  ├── controllers/ 
-  ├── database/ 
-  ├── migrations/ 
-  ├── models/ 
-  ├── routes/ 
-  └── seeders/
+**src/**
+  **├── config/**
+  **├── controllers/**
+  **├── database/** 
+  **├── migrations/** 
+  **├── models/**
+  **├── routes/**
+  **└── seeders/**
 
 
 ## Tecnologias Utilizadas
