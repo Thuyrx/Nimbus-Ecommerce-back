@@ -22,7 +22,7 @@ Este projeto é uma API desenvolvida com Node.js que permite gerenciar um sistem
 
 ### Diagrama ER
 
-![Diagrama ER](caminho/para/o/diagrama.png)
+![Diagrama ER](caminho/para/o/Diagrama__ER.png)
 
 ### Entidades e Atributos
 
