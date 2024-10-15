@@ -23,7 +23,8 @@ Este projeto é uma API desenvolvida com Node.js que permite gerenciar um sistem
 ### Diagrama ER
 
 ![Diagrama ER](./src/img/parte-03-bd.jpg)
-link da Ferramenta que utilizamos ![https://postgres.new/]
+
+**link da Ferramenta que utilizamos![https://postgres.new/]**
 
 ### Entidades e Atributos
 
