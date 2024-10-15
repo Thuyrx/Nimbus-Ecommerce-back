@@ -22,7 +22,7 @@ Este projeto é uma API desenvolvida com Node.js que permite gerenciar um sistem
 
 ### Diagrama ER
 
-![Diagrama ER](./src/img/Diagrama__ER.png)
+![Diagrama ER](./src/img/parte-03-bd.jpg)
 
 ### Entidades e Atributos
 
@@ -75,6 +75,8 @@ Este projeto é uma API desenvolvida com Node.js que permite gerenciar um sistem
   - `quantidade`: INTEGER, Not Null
   - `preco`: DECIMAL(10, 2), Not Null
 
+![Diagrama ER](./src/img/parte-01-bd.jpg)
+![Diagrama ER](./src/img/parte-02-bd.jpg)
 
 ## Arquitetura da API
 
