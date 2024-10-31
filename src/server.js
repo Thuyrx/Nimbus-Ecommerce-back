@@ -7,9 +7,11 @@ import PedidosRoutes from './routes/pedidos.js'
 import ItemPedidoRoutes from './routes/item_pedido.js';
 import PagamentoRoutes from './routes/pagamento.js'
 import conexao from './conexao.js';
+import cors from 'cors';
 
 const app = express();
 app.use(express.json());
+app.use(cors())
 
 app.use('/usuarios', usuarioRoutes);
 app.use('/carrinhos', carrinhoRoutes);
