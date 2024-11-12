@@ -1,6 +1,6 @@
 // config/config.js
 import dotenv from 'dotenv';
-dotenv.config(); // Carrega as variáveis de ambiente do .env
+dotenv.config({path: '../.env'}); // Carrega as variáveis de ambiente do .env
 console.log(process.env.DB_PASS)
 
 export default {
