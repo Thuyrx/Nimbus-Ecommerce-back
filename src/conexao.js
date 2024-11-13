@@ -9,6 +9,12 @@ dotenv.config();
 const { DB_NAME, DB_USER, DB_PASS, DB_HOST } = process.env;
 
 if (!DB_NAME || !DB_USER || !DB_PASS || !DB_HOST) {
+    console.log("Variáveis de ambiente carregadas:", {
+        DB_NAME: process.env.DB_NAME,
+        DB_USER: process.env.DB_USER,
+        DB_PASS: process.env.DB_PASS,
+        DB_HOST: process.env.DB_HOST,
+    });
     throw new Error("As variáveis de ambiente do banco de dados não estão configuradas corretamente.");
 }
 
