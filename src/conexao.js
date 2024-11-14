@@ -6,21 +6,21 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 // Verificando se as variáveis de ambiente necessárias estão definidas
-const { DB_NAME, DB_USER, DB_PASS, DB_HOST } = process.env;
+const { MYSQL_DATABASE, MYSQLUSER, MYSQLPASSWORD, MYSQLHOST } = process.env;
 
-if (!DB_NAME || !DB_USER || !DB_PASS || !DB_HOST) {
+if (!MYSQL_DATABASE || !MYSQLUSER || !MYSQLPASSWORD || !MYSQLHOST) {
     console.log("Variáveis de ambiente carregadas:", {
-        DB_NAME: process.env.DB_NAME,
-        DB_USER: process.env.DB_USER,
-        DB_PASS: process.env.DB_PASS,
-        DB_HOST: process.env.DB_HOST,
+        MYSQL_DATABASE: process.env.MYSQL_DATABASE,
+        MYSQLUSER: process.env.MYSQLUSER,
+        MYSQLPASSWORD: process.env.MYSQLPASSWORD,
+        MYSQLHOST: process.env.MYSQLHOST,
     });
     throw new Error("As variáveis de ambiente do banco de dados não estão configuradas corretamente.");
 }
 
 // Criar uma nova instância do Sequelize com as informações do banco de dados
-const conexao = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
-    host: DB_HOST,
+const conexao = new Sequelize(MYSQL_DATABASE, MYSQLUSER, MYSQLPASSWORD, {
+    host: MYSQLHOST,
     dialect: 'mysql', // Dialeto do banco de dados
 });
 
