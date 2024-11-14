@@ -39,28 +39,42 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Rota para atualizar múltiplos usuários (PUT)
 router.put('/', async (req, res) => {
-    const updatedUsers = req.body; // Espera um array de usuários
+    const updatedUsers = req.body;
 
     try {
-        await Promise.all(updatedUsers.map(async updatedUser => {
+        // Verifica se é um array
+        if (Array.isArray(updatedUsers)) {
+            await Promise.all(updatedUsers.map(async updatedUser => {
+                await Usuario.update(
+                    {
+                        nome: updatedUser.nome,
+                        email: updatedUser.email,
+                        senha: updatedUser.senha,
+                        idade: updatedUser.idade
+                    },
+                    { where: { id_usuario: updatedUser.id_usuario } }
+                );
+            }));
+        } else {
+            // Se não for array, assume que é um único objeto
             await Usuario.update(
                 {
-                    nome: updatedUser.nome,
-                    email: updatedUser.email,
-                    senha: updatedUser.senha,
-                    idade: updatedUser.idade // Certifique-se de incluir a idade aqui
+                    nome: updatedUsers.nome,
+                    email: updatedUsers.email,
+                    senha: updatedUsers.senha,
+                    idade: updatedUsers.idade
                 },
-                { where: { id_usuario: updatedUser.id_usuario } }
+                { where: { id_usuario: updatedUsers.id_usuario } }
             );
-        }));
-        res.status(200).json({ message: 'Usuários atualizados com sucesso' });
+        }
+        res.status(200).json({ message: 'Usuário(s) atualizado(s) com sucesso' });
     } catch (error) {
         console.error('Erro ao atualizar usuários:', error);
         res.status(500).json({ message: 'Erro ao atualizar usuários', error: error.message });
     }
 });
+
 
 // Rota para atualizar parcialmente um usuário (PATCH)
 router.patch('/:id_usuario', async (req, res) => {
