@@ -47,57 +47,31 @@ router.get('/', async (req, res) => {
 
 // Rota para atualizar usuários (PUT)
 router.put('/', async (req, res) => {
-    const updatedUsers = req.body;
+    const { id_usuario, nome, email, senha, idade } = req.body;
 
-    // Validação: verificar se o corpo da requisição é um array ou objeto único
-    if (!updatedUsers || (Array.isArray(updatedUsers) && updatedUsers.length === 0)) {
-        return res.status(400).json({ message: 'Dados de atualização inválidos.' });
+    // Validação dos campos obrigatórios
+    if (!id_usuario) {
+        return res.status(400).json({ message: 'ID do usuário é obrigatório.' });
     }
 
     try {
-        if (Array.isArray(updatedUsers)) {
-            // Atualizar múltiplos usuários
-            await Promise.all(
-                updatedUsers.map(async (user) => {
-                    if (!user.id_usuario) {
-                        throw new Error('ID do usuário é obrigatório para atualização.');
-                    }
+        // Atualiza o usuário pelo ID
+        const [updatedRows] = await Usuario.update(
+            { nome, email, senha, idade },
+            { where: { id_usuario } }
+        );
 
-                    await Usuario.update(
-                        {
-                            nome: user.nome,
-                            email: user.email,
-                            senha: user.senha,
-                            idade: user.idade,
-                        },
-                        { where: { id_usuario: user.id_usuario } }
-                    );
-                })
-            );
-        } else {
-            // Atualizar um único usuário
-            const { id_usuario, nome, email, senha, idade } = updatedUsers;
-            if (!id_usuario) {
-                return res.status(400).json({ message: 'ID do usuário é obrigatório.' });
-            }
-
-            await Usuario.update(
-                {
-                    nome,
-                    email,
-                    senha,
-                    idade,
-                },
-                { where: { id_usuario } }
-            );
+        if (updatedRows === 0) {
+            return res.status(404).json({ message: 'Usuário não encontrado para atualização.' });
         }
 
-        res.status(200).json({ message: 'Usuário(s) atualizado(s) com sucesso.' });
+        res.status(200).json({ message: 'Usuário atualizado com sucesso.' });
     } catch (error) {
-        console.error('Erro ao atualizar usuários:', error);
-        res.status(500).json({ message: 'Erro ao atualizar usuários', error: error.message });
+        console.error('Erro ao atualizar usuário:', error);
+        res.status(500).json({ message: 'Erro ao atualizar usuário', error: error.message });
     }
 });
+
 
 // Rota para deletar um usuário (DELETE)
 router.delete('/:id_usuario', async (req, res) => {
