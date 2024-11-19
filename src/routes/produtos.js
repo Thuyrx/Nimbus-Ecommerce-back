@@ -2,18 +2,16 @@ import express from 'express';
 import ProdutoModel from '../models/Produto.js';
 import conexao from '../conexao.js';
 import { DataTypes } from 'sequelize';
-import upload from '../upload.js';
 
 const router = express.Router();
 const Produto = ProdutoModel(conexao, DataTypes);
 
 // Criar um novo produto
-router.post('/', upload.single('imagem'), async (req, res) => {
+router.post('/', async (req, res) => {
     try {
-        const { nome, descricao, preco, estoque, categoria } = req.body;
-        const imagem = req.file ? `/uploads/images/${req.file.filename}` : null; // Caminho salvo
+        const { nome, descricao, preco, estoque, categoria, imagem } = req.body; // Imagem agora é fornecida como URL diretamente.
 
-        if (!nome || !descricao || preco === undefined || estoque === undefined || !categoria) {
+        if (!nome || !descricao || preco === undefined || estoque === undefined || !categoria || !imagem) {
             return res.status(400).json({ message: 'Todos os campos obrigatórios devem ser preenchidos.' });
         }
 
@@ -30,11 +28,7 @@ router.post('/', upload.single('imagem'), async (req, res) => {
 router.get('/', async (req, res) => {
     try {
         const products = await Produto.findAll();
-        const productsWithImages = products.map((product) => ({
-            ...product.toJSON(),
-            imagem: product.imagem ? `${req.protocol}://${req.get('host')}${product.imagem}` : null,
-        }));
-        res.status(200).json(productsWithImages);
+        res.status(200).json(products);
     } catch (error) {
         console.error('Erro ao buscar produtos:', error);
         res.status(500).json({ message: 'Erro ao buscar produtos', error: error.message });
@@ -42,14 +36,13 @@ router.get('/', async (req, res) => {
 });
 
 // Atualizar um produto
-router.put('/:id_produto', upload.single('imagem'), async (req, res) => {
+router.put('/:id_produto', async (req, res) => {
     const { id_produto } = req.params;
-    const { nome, descricao, preco, estoque, categoria } = req.body;
-    const imagem = req.file ? `/uploads/images/${req.file.filename}` : null;
+    const { nome, descricao, preco, estoque, categoria, imagem } = req.body;
 
     try {
         const [updated] = await Produto.update(
-            { nome, descricao, preco, estoque, categoria, ...(imagem && { imagem }) },
+            { nome, descricao, preco, estoque, categoria, imagem },
             { where: { id_produto } }
         );
 
