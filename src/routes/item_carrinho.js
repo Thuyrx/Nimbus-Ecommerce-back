@@ -1,4 +1,3 @@
-// src/routes/item_carrinho.js
 import express from 'express';
 import { Sequelize, DataTypes } from 'sequelize';
 import ItemCarrinhoModel from '../models/ItemCarrinho.js'; // Importa o modelo ItemCarrinho
@@ -86,7 +85,7 @@ router.patch('/:id', async (req, res) => {
     }
 });
 
-// Deletar um item do carrinho (DELETE)
+// Deletar um item do carrinho baseado no id_item (DELETE)
 router.delete('/:id', async (req, res) => {
     const { id } = req.params;
     try {
@@ -99,6 +98,24 @@ router.delete('/:id', async (req, res) => {
     } catch (error) {
         console.error('Erro ao deletar item do carrinho:', error);
         res.status(500).json({ message: 'Erro ao deletar item do carrinho' });
+    }
+});
+
+// Deletar um item do carrinho baseado no id_produto (DELETE)
+router.delete('/remover/:id_produto', async (req, res) => {
+    const { id_produto } = req.params;
+    try {
+        // Remover o item do carrinho com base no id_produto
+        const deleted = await ItemCarrinho.destroy({ where: { id_produto } });
+
+        if (deleted) {
+            res.status(200).json({ message: 'Produto removido com sucesso do carrinho' });
+        } else {
+            res.status(404).json({ message: 'Produto não encontrado no carrinho' });
+        }
+    } catch (error) {
+        console.error('Erro ao remover o item do carrinho:', error);
+        res.status(500).json({ message: 'Erro ao remover o item do carrinho', error: error.message });
     }
 });
 
