@@ -1,7 +1,8 @@
 import express from 'express';
 import { DataTypes } from 'sequelize';
-import UsuarioModel from '../models/Usuario.js'; // Importa o modelo do usuário
-import conexao from '../conexao.js'; // Conexão com o banco de dados
+import UsuarioModel from '../models/Usuario.js'; // Modelo do usuário
+import conexao from '../conexao.js'; // Conexão com o banco
+import { autenticarToken } from '../controllers/authMiddleware.js'; // Middleware de autenticação
 
 const router = express.Router();
 
@@ -12,13 +13,11 @@ const Usuario = UsuarioModel(conexao, DataTypes);
 router.post('/', async (req, res) => {
     const { nome, idade, email, senha } = req.body;
 
-    // Validação dos campos obrigatórios
     if (!nome || idade === undefined || !email || !senha) {
         return res.status(400).json({ message: 'Todos os campos são obrigatórios.' });
     }
 
     try {
-        // Cria um novo usuário
         const newUser = await Usuario.create({
             nome,
             idade,
@@ -27,35 +26,33 @@ router.post('/', async (req, res) => {
             data_criacao: new Date(),
         });
 
-        res.status(201).json(newUser); // Retorna o usuário criado
+        res.status(201).json(newUser);
     } catch (error) {
         console.error('Erro ao criar usuário:', error);
         res.status(500).json({ message: 'Erro ao criar usuário', error: error.message });
     }
 });
 
-// Rota para listar todos os usuários (GET)
-router.get('/', async (req, res) => {
+// Rota protegida para listar todos os usuários (GET)
+router.get('/', autenticarToken, async (req, res) => {
     try {
-        const users = await Usuario.findAll(); // Busca todos os usuários
-        res.status(200).json(users); // Retorna a lista de usuários
+        const users = await Usuario.findAll();
+        res.status(200).json(users);
     } catch (error) {
         console.error('Erro ao buscar usuários:', error);
         res.status(500).json({ message: 'Erro ao buscar usuários', error: error.message });
     }
 });
 
-// Rota para atualizar usuários (PUT)
-router.put('/', async (req, res) => {
+// Rota protegida para atualizar usuários (PUT)
+router.put('/', autenticarToken, async (req, res) => {
     const { id_usuario, nome, email, senha, idade } = req.body;
 
-    // Validação dos campos obrigatórios
     if (!id_usuario) {
         return res.status(400).json({ message: 'ID do usuário é obrigatório.' });
     }
 
     try {
-        // Atualiza o usuário pelo ID
         const [updatedRows] = await Usuario.update(
             { nome, email, senha, idade },
             { where: { id_usuario } }
@@ -72,9 +69,8 @@ router.put('/', async (req, res) => {
     }
 });
 
-
-// Rota para deletar um usuário (DELETE)
-router.delete('/:id_usuario', async (req, res) => {
+// Rota protegida para deletar usuários (DELETE)
+router.delete('/:id_usuario', autenticarToken, async (req, res) => {
     const { id_usuario } = req.params;
 
     try {
