@@ -26,7 +26,10 @@ router.post('/', async (req, res) => {
             data_criacao: new Date(),
         });
 
-        const { senha, ...userWithoutPassword } = newUser.toJSON();
+        // Retorna o usuário sem a senha, removendo-a após a criação
+        const userWithoutPassword = { ...newUser.toJSON() };
+        delete userWithoutPassword.senha;
+
         res.status(201).json(userWithoutPassword); // Retorna o usuário sem a senha
 
     } catch (error) {
@@ -34,6 +37,7 @@ router.post('/', async (req, res) => {
         res.status(500).json({ message: 'Erro ao criar usuário', error: error.message });
     }
 });
+
 
 // Rota protegida para listar todos os usuários (GET)
 router.get('/', autenticarToken, async (req, res) => {
