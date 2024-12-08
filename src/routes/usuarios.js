@@ -26,7 +26,9 @@ router.post('/', async (req, res) => {
             data_criacao: new Date(),
         });
 
-        res.status(201).json(newUser);
+        // Exclui a senha do objeto de resposta
+        const { senha, ...userWithoutPassword } = newUser.toJSON();
+        res.status(201).json(userWithoutPassword);
     } catch (error) {
         console.error('Erro ao criar usuário:', error);
         res.status(500).json({ message: 'Erro ao criar usuário', error: error.message });
@@ -36,7 +38,9 @@ router.post('/', async (req, res) => {
 // Rota protegida para listar todos os usuários (GET)
 router.get('/', autenticarToken, async (req, res) => {
     try {
-        const users = await Usuario.findAll();
+        const users = await Usuario.findAll({
+            attributes: { exclude: ['senha'] } // Exclui a senha da resposta
+        });
         res.status(200).json(users);
     } catch (error) {
         console.error('Erro ao buscar usuários:', error);

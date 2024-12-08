@@ -6,6 +6,7 @@ import ItemCarrinhoRoutes from './routes/item_carrinho.js';
 import PedidosRoutes from './routes/pedidos.js'
 import ItemPedidoRoutes from './routes/item_pedido.js';
 import PagamentoRoutes from './routes/pagamento.js'
+import Auths from './routes/auth.js'
 import conexao from './conexao.js';
 import cors from 'cors';
 
@@ -20,6 +21,7 @@ app.use('/item_carrinho', ItemCarrinhoRoutes);
 app.use('/item_pedido', ItemPedidoRoutes);
 app.use('/pedidos', PedidosRoutes);
 app.use('/pagamentos', PagamentoRoutes);
+app.use('/auths', Auths);
 
 // Estabelecer a conexão com o banco de dados e iniciar o servidor
 const initServer = async () => {
