@@ -1,10 +1,13 @@
 import express from 'express';
-import { DataTypes } from 'sequelize'; // Corrigido para importar DataTypes
-import UsuarioModel from '../models/Usuario.js'; // Modelo do usuário
-import conexao from '../conexao.js'; // Conexão com o banco
-import { autenticarToken } from '../controllers/authMiddleware.js'; // Middleware de autenticação
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
+import { DataTypes } from 'sequelize';
+import UsuarioModel from '../models/Usuario.js';
+import conexao from '../conexao.js';
+import { autenticarToken } from '../controllers/authMiddleware.js';
 
 const router = express.Router();
+const SECRET = 'seu_segredo'; // Coloque uma chave secreta para JWT
 
 // Inicializando o modelo Usuario com a conexão
 const Usuario = UsuarioModel(conexao, DataTypes);
@@ -18,26 +21,57 @@ router.post('/', async (req, res) => {
     }
 
     try {
+        const hashedPassword = await bcrypt.hash(senha, 10); // Hash da senha
+
         const newUser = await Usuario.create({
             nome,
             idade,
             email,
-            senha,
+            senha: hashedPassword, // Salva a senha como hash
             data_criacao: new Date(),
         });
 
-        // Retorna o usuário sem a senha, removendo-a após a criação
         const userWithoutPassword = { ...newUser.toJSON() };
         delete userWithoutPassword.senha;
 
-        res.status(201).json(userWithoutPassword); // Retorna o usuário sem a senha
-
+        res.status(201).json(userWithoutPassword);
     } catch (error) {
         console.error('Erro ao criar usuário:', error);
         res.status(500).json({ message: 'Erro ao criar usuário', error: error.message });
     }
 });
 
+// Rota de login (POST)
+router.post('/login', async (req, res) => {
+    const { email, senha } = req.body;
+
+    if (!email || !senha) {
+        return res.status(400).json({ message: 'Email e senha são obrigatórios.' });
+    }
+
+    try {
+        const user = await Usuario.findOne({ where: { email } });
+
+        if (!user) {
+            return res.status(401).json({ message: 'Usuário não encontrado.' });
+        }
+
+        // Verifica a senha com bcrypt
+        const isPasswordValid = await bcrypt.compare(senha, user.senha);
+
+        if (!isPasswordValid) {
+            return res.status(401).json({ message: 'Senha incorreta.' });
+        }
+
+        // Gera um token JWT
+        const token = jwt.sign({ id: user.id_usuario }, SECRET, { expiresIn: '1h' });
+
+        res.status(200).json({ token });
+    } catch (error) {
+        console.error('Erro ao fazer login:', error);
+        res.status(500).json({ message: 'Erro ao fazer login', error: error.message });
+    }
+});
 
 // Rota protegida para listar todos os usuários (GET)
 router.get('/', autenticarToken, async (req, res) => {
